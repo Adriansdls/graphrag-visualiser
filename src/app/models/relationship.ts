@@ -24,17 +24,17 @@ export const relationshipColumns: MRT_ColumnDef<Relationship>[] = [
         header: "Target",
     },
     {
+        accessorKey: "description",
+        header: "Description",
+        size: 600,
+    },
+    {
         accessorKey: "type",
         header: "Type",
     },
     {
         accessorKey: "weight",
         header: "Weight",
-    },
-    {
-        accessorKey: "description",
-        header: "Description",
-        size: 300,
     },
     {
         accessorKey: "text_unit_ids",

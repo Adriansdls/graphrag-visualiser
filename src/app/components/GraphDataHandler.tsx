@@ -1,7 +1,9 @@
+// src/app/components/GraphDataHandler.tsx
+
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import GraphViewer from "./GraphViewer";
-import { Box, Container, Tab, Tabs } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import DropZone from "./DropZone";
 import Introduction from "./Introduction";
@@ -109,20 +111,6 @@ const GraphDataHandler: React.FC = () => {
     },
   });
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setTabIndex(newValue);
-    let path = "/upload";
-    if (newValue === 1) path = "/graph";
-    if (newValue === 2) path = "/data";
-    navigate(path);
-    ReactGA.send({
-      hitType: "event",
-      eventCategory: "Tabs",
-      eventAction: "click",
-      eventLabel: `Tab ${newValue}`,
-    });
-  };
-
   const toggleGraphType = () => {
     setGraphType((prevType) => (prevType === "2d" ? "3d" : "2d"));
   };
@@ -133,11 +121,6 @@ const GraphDataHandler: React.FC = () => {
 
   return (
     <>
-      <Tabs value={tabIndex} onChange={handleChange} centered>
-        <Tab label="Upload Artifacts" />
-        <Tab label="Graph Visualization" />
-        <Tab label="Data Tables" />
-      </Tabs>
       {tabIndex === 0 && (
         <Container
           maxWidth="md"

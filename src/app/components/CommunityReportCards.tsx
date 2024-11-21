@@ -1,5 +1,8 @@
+// src/app/components/CommunityReportCards.tsx
+
 import React from "react";
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
+import Slider from "react-slick";
 import { CommunityReport } from "../models/community-report";
 
 interface CommunityReportCardsProps {
@@ -7,23 +10,31 @@ interface CommunityReportCardsProps {
 }
 
 const CommunityReportCards: React.FC<CommunityReportCardsProps> = ({ communityReports }) => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+  };
+
   return (
-    <Grid container spacing={2}>
+    <Slider {...settings}>
       {communityReports.map((report) => (
-        <Grid item xs={12} sm={6} md={4} key={report.id}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                {report.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {report.full_content}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Card key={report.id} sx={{ margin: 2 }}>
+          <CardContent>
+            <Typography variant="h5" component="div" gutterBottom>
+              {report.title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {report.full_content}
+            </Typography>
+          </CardContent>
+        </Card>
       ))}
-    </Grid>
+    </Slider>
   );
 };
 

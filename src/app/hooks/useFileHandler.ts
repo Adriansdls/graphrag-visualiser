@@ -1,4 +1,6 @@
-import { useState } from "react";
+// src/hooks/useFileHandler.ts
+
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Entity } from "../models/entity";
 import { Relationship } from "../models/relationship";
@@ -62,25 +64,19 @@ const useFileHandler = () => {
 
       let data;
       if (typeof file === "string") {
-        // Fetch default file from public folder as binary data
         const response = await fetch(file);
         if (!response.ok) {
           console.error(`Failed to fetch file ${file}: ${response.statusText}`);
           continue;
         }
 
-        // Convert ArrayBuffer to File object
         const buffer = await response.arrayBuffer();
         const blob = new Blob([buffer], { type: "application/x-parquet" });
         const fileBlob = new File([blob], fileName);
 
-        // Use the File object in readParquetFile
         data = await readParquetFile(fileBlob, schema);
-        // console.log(`Successfully loaded ${fileName} from public folder`);
       } else {
-        // Handle drag-and-drop files directly
         data = await readParquetFile(file, schema);
-        // console.log(`Successfully loaded ${file.name} from drag-and-drop`);
       }
 
       if (schema === "entity") {
@@ -120,13 +116,9 @@ const useFileHandler = () => {
         const contentType = response.headers.get("Content-Type");
 
         if (contentType === "application/octet-stream") {
-          // Updated Content-Type check
           console.log(`File exists: ${filePath}`);
           return true;
         } else {
-          // console.warn(
-          //   `File does not exist or incorrect type: ${filePath} (Content-Type: ${contentType})`
-          // );
           return false;
         }
       } else {
@@ -142,14 +134,15 @@ const useFileHandler = () => {
   };
 
   const loadDefaultFiles = async () => {
-    const filesToLoad = [];
+    const filesToLoad: string[] = [];
 
     for (const file of defaultFiles) {
       const fileExists = await checkFileExists(file);
       if (fileExists) {
-        filesToLoad.push(file); // Add to load queue if the file exists
+        filesToLoad.push(file);
       }
     }
+
     if (filesToLoad.length > 0) {
       await loadFiles(filesToLoad);
       navigate("/graph", { replace: true });
@@ -157,6 +150,10 @@ const useFileHandler = () => {
       console.log("No default files found in the public folder.");
     }
   };
+
+  useEffect(() => {
+    loadDefaultFiles();
+  }, []);
 
   return {
     entities,
