@@ -12,22 +12,24 @@ export interface Entity {
 }
 
 export const entityColumns: MRT_ColumnDef<Entity>[] = [
-    {
-      accessorKey: "id",
-      header: "ID",
-    },
-    {
-      accessorKey: "name",
-      header: "Name",
+  {
+    accessorKey: "name",
+    header: "Name",
+  },  
+  {
+    accessorKey: "description",
+    header: "Description",
+    size: 600,
     },
     {
       accessorKey: "type",
       header: "Type",
     },
     {
-      accessorKey: "description",
-      header: "Description",
+      accessorKey: "id",
+      header: "ID",
     },
+
     {
       accessorKey: "human_readable_id",
       header: "Human Readable ID",

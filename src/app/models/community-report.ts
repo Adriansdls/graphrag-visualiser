@@ -42,6 +42,7 @@ export const communityReportColumns: MRT_ColumnDef<CommunityReport>[] = [
     {
       accessorKey: "full_content",
       header: "Full Content",
+      size: 600,
     },
     {
       accessorKey: "level",

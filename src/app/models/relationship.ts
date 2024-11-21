@@ -34,6 +34,7 @@ export const relationshipColumns: MRT_ColumnDef<Relationship>[] = [
     {
         accessorKey: "description",
         header: "Description",
+        size: 300,
     },
     {
         accessorKey: "text_unit_ids",

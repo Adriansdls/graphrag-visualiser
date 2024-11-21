@@ -4,10 +4,12 @@ import {
   Routes,
   Route,
   Navigate,
+  Link as RouterLink,
 } from "react-router-dom";
 import ReactGA from "react-ga4";
 
 import GraphDataHandler from "../components/GraphDataHandler";
+import CommunityReportCards from "../components/CommunityReportCards";
 import {
   CssBaseline,
   Container,
@@ -17,14 +19,17 @@ import {
   ThemeProvider,
   IconButton,
   Tooltip,
-  Link,
+  Tab,
+  Tabs,
 } from "@mui/material";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import useFileHandler from "../hooks/useFileHandler";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(true);
+  const { communityReports } = useFileHandler(); // Access community reports
   const paletteType = darkMode ? "dark" : "light";
 
   const theme = createTheme({
@@ -97,8 +102,8 @@ const App: React.FC = () => {
             }}
           >
             <IconButton
-              component={Link}
-              href="https://github.com/noworneverev/graphrag-visualizer"
+              component={RouterLink}
+              to="https://github.com/noworneverev/graphrag-visualizer"
               target="_blank"
               rel="noopener"
               color="inherit"
@@ -119,15 +124,25 @@ const App: React.FC = () => {
               </Tooltip>
             )}
           </Box>
+          <Box sx={{ width: '100%', marginTop: '64px' }}>
+            <Tabs centered>
+              <Tab label="Upload Artifacts" component={RouterLink} to="/upload" />
+              <Tab label="Graph Visualization" component={RouterLink} to="/graph" />
+              <Tab label="Data Tables" component={RouterLink} to="/data" />
+              <Tab label="Community Reports" component={RouterLink} to="/community-reports" />
+            </Tabs>
+          </Box>
           <Routes>
-            <Route path="/" element={<Navigate to="/upload" replace />} />{" "}
-            <Route path="/upload" element={<GraphDataHandler />} />{" "}
-            <Route path="/graph" element={<GraphDataHandler />} />{" "}
-            <Route path="/data" element={<GraphDataHandler />} />{" "}
-            <Route path="*" element={<Navigate to="/upload" replace />} />{" "}
+            <Route path="/" element={<Navigate to="/upload" replace />} />
+            <Route path="/upload" element={<GraphDataHandler />} />
+            <Route path="/graph" element={<GraphDataHandler />} />
+            <Route path="/data" element={<GraphDataHandler />} />
+            <Route
+              path="/community-reports"
+              element={<CommunityReportCards communityReports={communityReports} />}
+            />
+            <Route path="*" element={<Navigate to="/upload" replace />} />
           </Routes>
-
-          {/* <GraphDataHandler /> */}
         </Container>
       </Router>
     </ThemeProvider>
